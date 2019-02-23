@@ -117,6 +117,7 @@ namespace FishShopServiceImplement.Implementations
             }
             source.Orders[index].Status = OrderStatus.Готов;
         }
+
         public void PayOrder(OrderBindingModel model)
         {
             int index = -1;
