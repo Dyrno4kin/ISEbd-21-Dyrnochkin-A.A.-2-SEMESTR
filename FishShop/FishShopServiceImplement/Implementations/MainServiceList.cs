@@ -95,6 +95,7 @@ namespace FishShopServiceImplement.Implementations
             source.Orders[index].DateImplement = DateTime.Now;
             source.Orders[index].Status = OrderStatus.Выполняется;
         }
+
         public void FinishOrder(OrderBindingModel model)
         {
             int index = -1;
