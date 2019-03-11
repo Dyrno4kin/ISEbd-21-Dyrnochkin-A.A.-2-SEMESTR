@@ -4,6 +4,8 @@ using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace FishShopServiceImplement.Implementations
 {
     public class MainServiceList : IMainService
@@ -15,53 +17,27 @@ namespace FishShopServiceImplement.Implementations
         }
         public List<OrderViewModel> GetList()
         {
-            List<OrderViewModel> result = new List<OrderViewModel>();
-            for (int i = 0; i < source.Orders.Count; ++i)
-            {
-                string customerFIO = string.Empty;
-                for (int j = 0; j < source.Customers.Count; ++j)
+            List<OrderViewModel> result = source.Orders
+                .Select(rec => new OrderViewModel
                 {
-                    if (source.Customers[j].Id == source.Orders[i].CustomerId)
-                    {
-                        customerFIO = source.Customers[j].CustomerFIO;
-                        break;
-                    }
-                }
-                string canFoodName = string.Empty;
-                for (int j = 0; j < source.CanFoods.Count; ++j)
-                {
-                    if (source.CanFoods[j].Id == source.Orders[i].CanFoodId)
-                    {
-                        canFoodName = source.CanFoods[j].CanFoodName;
-                        break;
-                    }
-                }
-                result.Add(new OrderViewModel
-                {
-                    Id = source.Orders[i].Id,
-                    CustomerId = source.Orders[i].CustomerId,
-                    CustomerFIO = customerFIO,
-                    CanFoodId = source.Orders[i].CanFoodId,
-                    CanFoodName = canFoodName,
-                    Count = source.Orders[i].Count,
-                    Sum = source.Orders[i].Sum,
-                    DateCreate = source.Orders[i].DateCreate.ToLongDateString(),
-                    DateImplement = source.Orders[i].DateImplement?.ToLongDateString(),
-                    Status = source.Orders[i].Status.ToString()
-                });
-            }
+                    Id = rec.Id,
+                    CustomerId = rec.CustomerId,
+                    CanFoodId = rec.CanFoodId,
+                    DateCreate = rec.DateCreate.ToLongDateString(),
+                    DateImplement = rec.DateImplement?.ToLongDateString(),
+                    Status = rec.Status.ToString(),
+                    Count = rec.Count,
+                    Sum = rec.Sum,
+                    CustomerFIO = source.Customers.FirstOrDefault(recI => recI.Id ==
+     rec.CustomerId)?.CustomerFIO,
+                    CanFoodName = source.CanFoods.FirstOrDefault(recC => recC.Id ==
+    rec.CanFoodId)?.CanFoodName,
+                })                .ToList();
             return result;
         }
         public void CreateOrder(OrderBindingModel model)
         {
-            int maxId =0;
-            for (int i = 0; i < source.Orders.Count; ++i)
-            {
-                if (source.Orders[i].Id > maxId)
-                {
-                    maxId = source.Customers[i].Id;
-                }
-            }
+            int maxId = source.Orders.Count > 0 ? source.Orders.Max(rec => rec.Id) : 0;
             source.Orders.Add(new Order
             {
                 Id = maxId + 1,
@@ -75,69 +51,106 @@ namespace FishShopServiceImplement.Implementations
         }
         public void TakeOrderInWork(OrderBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Orders.Count; ++i)
-            {
-                if (source.Orders[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Order element = source.Orders.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Orders[index].Status != OrderStatus.Принят)
+            if (element.Status != OrderStatus.Принят)
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
-            source.Orders[index].DateImplement = DateTime.Now;
-            source.Orders[index].Status = OrderStatus.Выполняется;
+            // смотрим по количеству компонентов на складах
+            var canFoodIngredients = source.CanFoodIngredients.Where(rec => rec.CanFoodId
+           == element.CanFoodId);
+            foreach (var canFoodIngredient in canFoodIngredients)
+            {
+                int countOnStocks = source.StockIngredients
+                .Where(rec => rec.IngredientId ==
+               canFoodIngredient.IngredientId)
+               .Sum(rec => rec.Count);
+                if (countOnStocks < canFoodIngredient.Count * element.Count)
+                {
+                    var ingredientName = source.Ingredients.FirstOrDefault(rec => rec.Id ==
+                   canFoodIngredient.IngredientId);
+                    throw new Exception("Не достаточно ингредиента " +
+                   ingredientName?.IngredientName + " требуется " + (canFoodIngredient.Count * element.Count) +
+                   ", в наличии " + countOnStocks);
+                }
+            }
+            // списываем
+            foreach (var canFoodIngredient in canFoodIngredients)
+            {
+                int countOnStocks = canFoodIngredient.Count * element.Count;
+                var stockIngredients = source.StockIngredients.Where(rec => rec.IngredientId
+               == canFoodIngredient.IngredientId);
+                foreach (var stockIngredient in stockIngredients)
+                {
+                    // ингредиентов на одном слкаде может не хватать
+                    if (stockIngredient.Count >= countOnStocks)
+                    {
+                        stockIngredient.Count -= countOnStocks;
+                        break;
+                    }
+                    else
+                    {
+                        countOnStocks -= stockIngredient.Count;
+                        stockIngredient.Count = 0;
+                    }
+                }
+            }
+            element.DateImplement = DateTime.Now;
+            element.Status = OrderStatus.Выполняется;
         }
 
         public void FinishOrder(OrderBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Orders.Count; ++i)
-            {
-                if (source.Orders[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Order element = source.Orders.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Orders[index].Status != OrderStatus.Выполняется)
+            if (element.Status != OrderStatus.Выполняется)
             {
                 throw new Exception("Заказ не в статусе \"Выполняется\"");
             }
-            source.Orders[index].Status = OrderStatus.Готов;
+            element.Status = OrderStatus.Готов;
         }
 
         public void PayOrder(OrderBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Orders.Count; ++i)
-            {
-                if (source.Orders[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Order element = source.Orders.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Orders[index].Status != OrderStatus.Готов)
+            if (element.Status != OrderStatus.Готов)
             {
                 throw new Exception("Заказ не в статусе \"Готов\"");
             }
-            source.Orders[index].Status = OrderStatus.Оплачен;
+            element.Status = OrderStatus.Оплачен;
+        }
+
+        public void PutIngredientOnStock(StockIngredientBindingModel model)
+        {
+            StockIngredient element = source.StockIngredients.FirstOrDefault(rec =>
+           rec.StockId == model.StockId && rec.IngredientId == model.IngredientId);
+            if (element != null)
+            {
+                element.Count += model.Count;
+            }
+            else
+            {
+                int maxId = source.StockIngredients.Count > 0 ?
+               source.StockIngredients.Max(rec => rec.Id) : 0;
+                source.StockIngredients.Add(new StockIngredient
+                {
+                    Id = ++maxId,
+                    StockId = model.StockId,
+                    IngredientId = model.IngredientId,
+                    Count = model.Count
+                });
+            }
         }
     }
 }

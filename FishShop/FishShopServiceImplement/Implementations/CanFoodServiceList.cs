@@ -4,6 +4,8 @@ using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace FishShopServiceImplement.Implementations
 {
     public class CanFoodServiceList : ICanFoodService
@@ -15,252 +17,163 @@ namespace FishShopServiceImplement.Implementations
         }
         public List<CanFoodViewModel> GetList()
         {
-            List<CanFoodViewModel> result = new List<CanFoodViewModel>();
-            for (int i = 0; i < source.CanFoods.Count; ++i)
+            List<CanFoodViewModel> result = source.CanFoods.Select(rec => new CanFoodViewModel
             {
-                // требуется дополнительно получить список компонентов для изделия и их количество
-            List<CanFoodIngredientViewModel> canFoodIngredients = new
-List<CanFoodIngredientViewModel>();
-                for (int j = 0; j < source.CanFoodIngredients.Count; ++j)
-                {
-                    if (source.CanFoodIngredients[j].CanFoodId == source.CanFoods[i].Id)
+                Id = rec.Id,
+                CanFoodName = rec.CanFoodName,
+                Price = rec.Price,
+                CanFoodIngredients = source.CanFoodIngredients
+                    .Where(recCI => recCI.CanFoodId == rec.Id)
+                    .Select(recCI => new CanFoodIngredientViewModel
                     {
-                        string ingredientName = string.Empty;
-                        for (int k = 0; k < source.Ingredients.Count; ++k)
-                        {
-                            if (source.CanFoodIngredients[j].IngredientId ==
-                           source.CanFoods[k].Id)
-                            {
-                                ingredientName = source.Ingredients[k].IngredientName;
-                                break;
-                            }
-                        }
-                        canFoodIngredients.Add(new CanFoodIngredientViewModel
-                        {
-                            Id = source.CanFoodIngredients[j].Id,
-                            CanFoodId = source.CanFoodIngredients[j].CanFoodId,
-                            IngredientId = source.CanFoodIngredients[j].IngredientId,
-                            IngredientName = ingredientName,
-                            Count = source.CanFoodIngredients[j].Count
-                        });
-                    }
-                }
-                result.Add(new CanFoodViewModel
-                {
-                    Id = source.CanFoods[i].Id,
-                    CanFoodName = source.CanFoods[i].CanFoodName,
-                    Price = source.CanFoods[i].Price,
-                    CanFoodIngredients = canFoodIngredients
-                });
-            }
+                        Id = recCI.Id,
+                        CanFoodId = recCI.CanFoodId,
+                        IngredientId = recCI.IngredientId,
+                        IngredientName = source.Ingredients.FirstOrDefault(recI =>
+    recI.Id == recCI.IngredientId)?.IngredientName,
+                        Count = recCI.Count
+                    })
+                    .ToList()
+            })
+            .ToList();
             return result;
         }
         public CanFoodViewModel GetElement(int id)
         {
-            for (int i = 0; i < source.CanFoods.Count; ++i)
+            CanFood element = source.CanFoods.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                // требуется дополнительно получить список компонентов для изделия и их количество
-            List<CanFoodIngredientViewModel> canFoodIngredients = new
-List<CanFoodIngredientViewModel>();
-                for (int j = 0; j < source.CanFoodIngredients.Count; ++j)
+                return new CanFoodViewModel
                 {
-                    if (source.CanFoodIngredients[j].CanFoodId == source.CanFoods[i].Id)
-                    {
-                        string ingredientName = string.Empty;
-                        for (int k = 0; k < source.Ingredients.Count; ++k)
-                        {
-                            if (source.CanFoodIngredients[j].IngredientId ==
-                           source.Ingredients[k].Id)
-                            {
-                                ingredientName = source.Ingredients[k].IngredientName;
-                                break;
-                            }
-                        }
-                        canFoodIngredients.Add(new CanFoodIngredientViewModel
-                        {
-                            Id = source.CanFoodIngredients[j].Id,
-                            CanFoodId = source.CanFoodIngredients[j].CanFoodId,
-                            IngredientId = source.CanFoodIngredients[j].IngredientId,
-                            IngredientName = ingredientName,
-                            Count = source.CanFoodIngredients[j].Count
-                        });
-                    }
-                }
-                if (source.CanFoods[i].Id == id)
+                    Id = element.Id,
+                    CanFoodName = element.CanFoodName,
+                    Price = element.Price,
+                    CanFoodIngredients = source.CanFoodIngredients
+                .Where(recCI => recCI.CanFoodId == element.Id)
+                .Select(recCI => new CanFoodIngredientViewModel
                 {
-                    return new CanFoodViewModel
-                    {
-                        Id = source.CanFoods[i].Id,
-                        CanFoodName = source.CanFoods[i].CanFoodName,
-                        Price = source.CanFoods[i].Price,
-                        CanFoodIngredients = canFoodIngredients
-                    };
-                }
+                    Id = recCI.Id,
+                    CanFoodId = recCI.CanFoodId,
+                    IngredientId = recCI.IngredientId,
+                    IngredientName = source.Ingredients.FirstOrDefault(recI =>
+     recI.Id == recCI.IngredientId)?.IngredientName,
+                    Count = recCI.Count
+                })
+               .ToList()
+                };
             }
             throw new Exception("Элемент не найден");
         }
 
         public void AddElement(CanFoodBindingModel model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.CanFoods.Count; ++i)
+            CanFood element = source.CanFoods.FirstOrDefault(rec => rec.CanFoodName ==
+ model.CanFoodName);
+            if (element != null)
             {
-                if (source.CanFoods[i].Id > maxId)
-                {
-                    maxId = source.CanFoods[i].Id;
-                }
-                if (source.CanFoods[i].CanFoodName == model.CanFoodName)
-                {
-                    throw new Exception("Уже есть изделие с таким названием");
-                }
+                throw new Exception("Уже есть консерва с таким названием");
             }
+            int maxId = source.CanFoods.Count > 0 ? source.CanFoods.Max(rec => rec.Id) :
+           0;
             source.CanFoods.Add(new CanFood
             {
                 Id = maxId + 1,
                 CanFoodName = model.CanFoodName,
                 Price = model.Price
             });
-            // компоненты для изделия
-            int maxCIId = 0;
-            for (int i = 0; i < source.CanFoodIngredients.Count; ++i)
-            {
-                if (source.CanFoodIngredients[i].Id > maxCIId)
-                {
-                    maxCIId = source.CanFoodIngredients[i].Id;
-                }
-            }
-            // убираем дубли по компонентам
-            for (int i = 0; i < model.CanFoodIngredients.Count; ++i)
-            {
-                for (int j = 1; j < model.CanFoodIngredients.Count; ++j)
-                {
-                    if (model.CanFoodIngredients[i].CanFoodId ==
-                    model.CanFoodIngredients[j].CanFoodId)
-                    {
-                        model.CanFoodIngredients[i].Count +=
-                        model.CanFoodIngredients[j].Count;
-                        model.CanFoodIngredients.RemoveAt(j--);
-                    }
-                }
-            }
-            // добавляем компоненты
-            for (int i = 0; i < model.CanFoodIngredients.Count; ++i)
+            // компоненты для консерв
+            int maxCIId = source.CanFoodIngredients.Count > 0 ?
+           source.CanFoodIngredients.Max(rec => rec.Id) : 0;
+            // убираем дубли по ингредиентам
+            var groupIngredients = model.CanFoodIngredients
+            .GroupBy(rec => rec.IngredientId)
+           .Select(rec => new
+           {
+               IngredientId = rec.Key,
+               Count = rec.Sum(r => r.Count)
+           });
+            // добавляем ингредиаенты
+            foreach (var groupIngredient in groupIngredients)
             {
                 source.CanFoodIngredients.Add(new CanFoodIngredient
                 {
                     Id = ++maxCIId,
                     CanFoodId = maxId + 1,
-                    IngredientId = model.CanFoodIngredients[i].IngredientId,
-                    Count = model.CanFoodIngredients[i].Count
+                    IngredientId = groupIngredient.IngredientId,
+                    Count = groupIngredient.Count
                 });
-            }
+            }
         }
         public void UpdElement(CanFoodBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.CanFoods.Count; ++i)
+            CanFood element = source.CanFoods.FirstOrDefault(rec => rec.CanFoodName ==
+model.CanFoodName && rec.Id != model.Id);
+            if (element != null)
             {
-                if (source.CanFoods[i].Id == model.Id)
-                {
-                index = i;
-                }
-                if (source.CanFoods[i].CanFoodName == model.CanFoodName &&
-                source.CanFoods[i].Id != model.Id)
-                {
-                    throw new Exception("Уже есть изделие с таким названием");
-                }
+                throw new Exception("Уже есть консерва с таким названием");
             }
-            if (index == -1)
+            element = source.CanFoods.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            source.CanFoods[index].CanFoodName = model.CanFoodName;
-            source.CanFoods[index].Price = model.Price;
-            int maxCIId = 0;
-            for (int i = 0; i < source.CanFoodIngredients.Count; ++i)
-            {
-                if (source.CanFoodIngredients[i].Id > maxCIId)
-                {
-                    maxCIId = source.CanFoodIngredients[i].Id;
-                }
-            }
+            element.CanFoodName = model.CanFoodName;
+            element.Price = model.Price;
+            int maxCIId = source.CanFoodIngredients.Count > 0 ?
+           source.CanFoodIngredients.Max(rec => rec.Id) : 0;
             // обновляем существуюущие компоненты
-            for (int i = 0; i < source.CanFoodIngredients.Count; ++i)
+            var ingrIds = model.CanFoodIngredients.Select(rec =>
+           rec.IngredientId).Distinct();
+            var updateIngredients = source.CanFoodIngredients.Where(rec => rec.CanFoodId ==
+           model.Id && ingrIds.Contains(rec.IngredientId));
+            foreach (var updateIngredient in updateIngredients)
             {
-                if (source.CanFoodIngredients[i].CanFoodId == model.Id)
-                {
-                    bool flag = true;
-                    for (int j = 0; j < model.CanFoodIngredients.Count; ++j)
-                    {
-                        // если встретили, то изменяем количество
-                        if (source.CanFoodIngredients[i].Id ==
-                       model.CanFoodIngredients[j].Id)
-                        {
-                            source.CanFoodIngredients[i].Count =
-                           model.CanFoodIngredients[j].Count;
-                            flag = false;
-                            break;
-                        }
-                    }
-                    // если не встретили, то удаляем
-                    if (flag)
-                    {
-                        source.CanFoodIngredients.RemoveAt(i--);
-                    }
-                }
+                updateIngredient.Count = model.CanFoodIngredients.FirstOrDefault(rec =>
+               rec.Id == updateIngredient.Id).Count;
             }
+            source.CanFoodIngredients.RemoveAll(rec => rec.CanFoodId == model.Id &&
+           !ingrIds.Contains(rec.IngredientId));
             // новые записи
-            for (int i = 0; i < model.CanFoodIngredients.Count; ++i)
+            var groupIngredients = model.CanFoodIngredients
+            .Where(rec => rec.Id == 0)
+           .GroupBy(rec => rec.IngredientId)
+           .Select(rec => new
+           {
+               IngredientId = rec.Key,
+               Count = rec.Sum(r => r.Count)
+           });
+            foreach (var groupIngredient in groupIngredients)
             {
-                if (model.CanFoodIngredients[i].Id == 0)
+                CanFoodIngredient elementCI = source.CanFoodIngredients.FirstOrDefault(rec
+               => rec.CanFoodId == model.Id && rec.IngredientId == groupIngredient.IngredientId);
+                if (elementCI != null)
                 {
-                    // ищем дубли
-                    for (int j = 0; j < source.CanFoodIngredients.Count; ++j)
+                    elementCI.Count += groupIngredient.Count;
+                }
+                else
+                {
+                    source.CanFoodIngredients.Add(new CanFoodIngredient
                     {
-                        if (source.CanFoodIngredients[j].CanFoodId == model.Id &&
-                        source.CanFoodIngredients[j].IngredientId ==
-                       model.CanFoodIngredients[i].IngredientId)
-                        {
-                            source.CanFoodIngredients[j].Count +=
-                           model.CanFoodIngredients[i].Count;
-                            model.CanFoodIngredients[i].Id =
-                           source.CanFoodIngredients[j].Id;
-                            break;
-                        }
-                    }
-                    // если не нашли дубли, то новая запись
-                    if (model.CanFoodIngredients[i].Id == 0)
-                    {
-                        source.CanFoodIngredients.Add(new CanFoodIngredient
-                        {
-                            Id = ++maxCIId,
-                            CanFoodId = model.Id,
-                            IngredientId = model.CanFoodIngredients[i].IngredientId,
-                            Count = model.CanFoodIngredients[i].Count
-                        });
-                    }
+                        Id = ++maxCIId,
+                        CanFoodId = model.Id,
+                        IngredientId = groupIngredient.IngredientId,
+                        Count = groupIngredient.Count
+                    });
                 }
             }
         }
         public void DelElement(int id)
         {
-            // удаяем записи по компонентам при удалении изделия
-            for (int i = 0; i < source.CanFoodIngredients.Count; ++i)
+            CanFood element = source.CanFoods.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                if (source.CanFoodIngredients[i].CanFoodId == id)
-                {
-                    source.CanFoodIngredients.RemoveAt(i--);
-                }
+                // удаяем записи по компонентам при удалении изделия
+                source.CanFoodIngredients.RemoveAll(rec => rec.CanFoodId == id);
+                source.CanFoods.Remove(element);
             }
-            for (int i = 0; i < source.CanFoods.Count; ++i)
+            else
             {
-                if (source.CanFoods[i].Id == id)
-                {
-                    source.CanFoods.RemoveAt(i);
-                    return;
-                }
+                throw new Exception("Элемент не найден");
             }
-            throw new Exception("Элемент не найден");
         }
-    }
-}
+    }}
