@@ -222,6 +222,10 @@
       <Project>{7fc9f917-6f1e-4f40-b8dc-6c8015304d75}</Project>
       <Name>FishShopServiceDAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FishShopServiceImplementDataBase\FishShopServiceImplementDataBase.csproj">
+      <Project>{9c14db60-9060-448b-a16b-ae7afcdd9189}</Project>
+      <Name>FishShopServiceImplementDataBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FishShopServiceImplement\FishShopServiceImplement.csproj">
       <Project>{1c9677e2-23e8-4586-a221-27083f846d6c}</Project>
       <Name>FishShopServiceImplement</Name>

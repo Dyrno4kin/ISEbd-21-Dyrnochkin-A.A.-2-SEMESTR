@@ -48,9 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FishDbContext.cs" />
+    <Compile Include="Implementations\CanFoodServiceDB.cs" />
+    <Compile Include="Implementations\CustomerServiceDB.cs" />
+    <Compile Include="Implementations\MainServiceDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FishShopModel\FishShopModel.csproj">
+      <Project>{5b0f8182-d904-4b8e-9568-620f913bddcd}</Project>
+      <Name>FishShopModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FishShopServiceDAL\FishShopServiceDAL.csproj">
       <Project>{7fc9f917-6f1e-4f40-b8dc-6c8015304d75}</Project>
       <Name>FishShopServiceDAL</Name>
