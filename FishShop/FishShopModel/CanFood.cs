@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -13,13 +14,14 @@ namespace FishShopModel
     public class CanFood
     {
         public int Id { get; set; }
+        [Required]
         public string CanFoodName { get; set; }
         public decimal Price { get; set; }
 
         [ForeignKey("CanFoodId")]
         public virtual List<CanFoodIngredient> CanFoodIngredients { get; set; }
         [ForeignKey("CanFoodId")]
-        public virtual List<CanFoodIngredient> CanFoodIngredients { get; set; }
+        public virtual List<Order> Orders { get; set; }
 
     }
 }

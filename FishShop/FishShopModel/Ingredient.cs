@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,5 +17,11 @@ namespace FishShopModel
 
         [Required]
         public string IngredientName { get; set; }
+
+        [ForeignKey("IngredientId")]
+        public virtual List<CanFoodIngredient> CanFoodIngredients { get; set; }
+
+        [ForeignKey("IngredientId")]
+        public virtual List<StockIngredient> StockIngredients { get; set; }
     }
 }
