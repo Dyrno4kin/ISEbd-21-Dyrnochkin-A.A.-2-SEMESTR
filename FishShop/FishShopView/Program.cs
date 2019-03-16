@@ -1,4 +1,4 @@
-﻿using FishShopServiceDAL.Interfaces;
+using FishShopServiceDAL.Interfaces;
 using FishShopServiceImplementDataBase;
 using FishShopServiceImplementDataBase.Implementations;
 using System;
@@ -20,7 +20,8 @@ namespace FishShopView
             var container = BuildUnityContainer();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(container.Resolve<FormMain>());
+            Application.Run(container.Resolve<FormMain>());
+
         }
 
         public static IUnityContainer BuildUnityContainer()
@@ -37,7 +38,8 @@ namespace FishShopView
             currentContainer.RegisterType<IStockService, StockServiceDB>(new
            HierarchicalLifetimeManager());
             currentContainer.RegisterType<IMainService, MainServiceDB>(new
-           HierarchicalLifetimeManager());
+           HierarchicalLifetimeManager());
+
             return currentContainer;
         }
     }

@@ -1,4 +1,5 @@
-﻿using FishShopServiceDAL.BindingModels;
+﻿
+using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System;
