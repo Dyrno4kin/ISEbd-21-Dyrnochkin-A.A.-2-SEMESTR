@@ -1,10 +1,6 @@
-﻿using System;
-using FishShopServiceDAL.BindingModels;
+﻿using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FishShopServiceDAL.Interfaces
 {
