@@ -1,4 +1,4 @@
-﻿using FishShopModel;
+using FishShopModel;
 using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
@@ -35,7 +35,8 @@ namespace FishShopServiceImplement.Implementations
                     Id = element.Id,
                     CustomerFIO = element.CustomerFIO
                 };
-            }
+            }
+
             throw new Exception("Элемент не найден");
         }
         public void AddElement(CustomerBindingModel model)
@@ -79,7 +80,10 @@ model.CustomerFIO && rec.Id != model.Id);
             else
             {
                 throw new Exception("Элемент не найден");
-            }
+            }
+
         }
     }
-}
+}
+
+

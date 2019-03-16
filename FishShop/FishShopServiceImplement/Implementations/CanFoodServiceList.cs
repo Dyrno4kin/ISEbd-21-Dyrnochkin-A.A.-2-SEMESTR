@@ -1,4 +1,4 @@
-﻿using FishShopModel;
+using FishShopModel;
 using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
@@ -102,7 +102,8 @@ namespace FishShopServiceImplement.Implementations
                     IngredientId = groupIngredient.IngredientId,
                     Count = groupIngredient.Count
                 });
-            }
+            }
+
         }
         public void UpdElement(CanFoodBindingModel model)
         {
@@ -176,4 +177,6 @@ model.CanFoodName && rec.Id != model.Id);
                 throw new Exception("Элемент не найден");
             }
         }
-    }}
+    }
+}
+
