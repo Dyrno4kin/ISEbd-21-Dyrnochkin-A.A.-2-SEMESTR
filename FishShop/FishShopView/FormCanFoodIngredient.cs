@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Unity;
-
 namespace FishShopView
 {
     public partial class FormCanFoodIngredient : Form

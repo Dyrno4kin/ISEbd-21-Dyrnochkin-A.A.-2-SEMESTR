@@ -5,7 +5,6 @@ using System;
 using System.Windows.Forms;
 using Unity;
 
-
 namespace FishShopView
 {
     public partial class FormCustomer : Form
