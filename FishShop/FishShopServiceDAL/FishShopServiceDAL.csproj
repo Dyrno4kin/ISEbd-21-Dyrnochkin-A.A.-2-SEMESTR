@@ -73,6 +73,7 @@
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\StockIngredientViewModel.cs" />
     <Compile Include="ViewModels\StockViewModel.cs" />
+
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FishShopModel\FishShopModel.csproj">
