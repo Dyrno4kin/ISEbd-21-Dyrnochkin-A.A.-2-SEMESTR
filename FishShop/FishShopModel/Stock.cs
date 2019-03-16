@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,6 +16,5 @@ namespace FishShopModel
 
         [ForeignKey("StockId")]
         public virtual List<StockIngredient> StockIngredients { get; set; }
-
-    }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using FishShopModel;
+using FishShopModel;
 using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
@@ -23,7 +23,8 @@ namespace FishShopServiceImplement.Implementations
                 Id = rec.Id,
                 IngredientName = rec.IngredientName
             })
-             .ToList();
+             .ToList();
+
             return result;
         }
         public IngredientViewModel GetElement(int id)

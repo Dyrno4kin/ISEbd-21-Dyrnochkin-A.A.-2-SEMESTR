@@ -1,4 +1,4 @@
-﻿namespace FishShopServiceDAL.ViewModels
+namespace FishShopServiceDAL.ViewModels
 {
     public class CanFoodIngredientViewModel
     {

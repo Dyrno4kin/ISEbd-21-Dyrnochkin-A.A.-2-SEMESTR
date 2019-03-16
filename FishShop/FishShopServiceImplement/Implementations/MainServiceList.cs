@@ -1,4 +1,4 @@
-﻿using FishShopModel;
+using FishShopModel;
 using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
@@ -32,7 +32,8 @@ namespace FishShopServiceImplement.Implementations
      rec.CustomerId)?.CustomerFIO,
                     CanFoodName = source.CanFoods.FirstOrDefault(recC => recC.Id ==
     rec.CanFoodId)?.CanFoodName,
-                })                .ToList();
+                })
+                .ToList();
             return result;
         }
         public void CreateOrder(OrderBindingModel model)
@@ -153,4 +154,5 @@ namespace FishShopServiceImplement.Implementations
             }
         }
     }
-}
+}
+
