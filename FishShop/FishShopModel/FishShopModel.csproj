@@ -60,6 +60,8 @@
     <Compile Include="Order.cs" />
     <Compile Include="OrderStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stock.cs" />
+    <Compile Include="StockIngredient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
