@@ -58,7 +58,6 @@
     <Compile Include="BindingModels\CustomerBindingModel.cs" />
     <Compile Include="BindingModels\IngredientBindingModel.cs" />
     <Compile Include="BindingModels\OrderBildingModel.cs" />
-    <Compile Include="BindingModels\OrderStatuBindingModels.cs" />
     <Compile Include="Interfaces\ICanFoodService.cs" />
     <Compile Include="Interfaces\ICustomerService.cs" />
     <Compile Include="Interfaces\IIngredientService.cs" />
@@ -69,7 +68,6 @@
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\IngredientViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
-    <Compile Include="ViewModels\OrderStatusViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FishShopModel\FishShopModel.csproj">
