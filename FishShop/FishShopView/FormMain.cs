@@ -13,10 +13,12 @@ namespace FishShopView
         [Dependency]
         public new IUnityContainer Container { get; set; }
         private readonly IMainService service;
-        public FormMain(IMainService service)
+        private readonly IReportService reportService;
+        public FormMain(IMainService service, IReportService reportService )
         {
             InitializeComponent();
             this.service = service;
+            this.reportService = reportService;
         }
         private void LoadData()
         {
@@ -127,6 +129,42 @@ namespace FishShopView
         {
             var form = Container.Resolve<FormPutOnStock>();
             form.ShowDialog();
+        }
+
+        private void прайсКонсервToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "doc|*.doc|docx|*.docx"
+            };
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    reportService.SaveCanFoodPrice(new ReportBindingModel
+                    {
+                        FileName = sfd.FileName
+                    });
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
+                }
+            }
+        }
+        private void загруженностьСкладовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormStocksLoad>();
+        form.ShowDialog();
+        }
+
+        private void заказыКликнтовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormCustomerOrders>();
+            form.ShowDialog();
         }
     }
 }
