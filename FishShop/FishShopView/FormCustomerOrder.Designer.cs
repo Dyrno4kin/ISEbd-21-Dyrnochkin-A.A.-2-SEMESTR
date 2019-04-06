@@ -90,7 +90,7 @@
             // 
             // buttonToPdf
             // 
-            this.buttonToPdf.Location = new System.Drawing.Point(751, 17);
+            this.buttonToPdf.Location = new System.Drawing.Point(930, 13);
             this.buttonToPdf.Name = "buttonToPdf";
             this.buttonToPdf.Size = new System.Drawing.Size(75, 23);
             this.buttonToPdf.TabIndex = 7;
