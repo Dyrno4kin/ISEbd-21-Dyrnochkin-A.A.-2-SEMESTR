@@ -1,11 +1,19 @@
-﻿namespace FishShopServiceDAL.BindingModels
+﻿using System.Runtime.Serialization;
+
+namespace FishShopServiceDAL.BindingModels
 {
-  public class OrderBindingModel
+    [DataContract]
+    public class OrderBindingModel
   {
-    public int Id { get; set; }
-    public int CustomerId { get; set; }
-    public int CanFoodId { get; set; }
-    public int Count { get; set; }
-    public decimal Sum { get; set; }
+        [DataMember]
+        public int Id { get; set; }
+        [DataMember]
+        public int CustomerId { get; set; }
+        [DataMember]
+        public int CanFoodId { get; set; }
+        [DataMember]
+        public int Count { get; set; }
+        [DataMember]
+        public decimal Sum { get; set; }
   }
 }

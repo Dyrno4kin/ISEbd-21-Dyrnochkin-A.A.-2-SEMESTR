@@ -257,6 +257,10 @@
       <Project>{5b0f8182-d904-4b8e-9568-620f913bddcd}</Project>
       <Name>FishShopModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FishShopRestApi\FishShopRestApi.csproj">
+      <Project>{34d09d9a-59cd-4e77-ba69-9eb6e0e46b81}</Project>
+      <Name>FishShopRestApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FishShopServiceDAL\FishShopServiceDAL.csproj">
       <Project>{7fc9f917-6f1e-4f40-b8dc-6c8015304d75}</Project>
       <Name>FishShopServiceDAL</Name>
