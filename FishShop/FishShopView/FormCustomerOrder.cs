@@ -1,21 +1,18 @@
 ﻿using FishShopServiceDAL.BindingModels;
-using FishShopServiceDAL.Interfaces;
+using FishShopServiceDAL.ViewModels;
+using FishShopView.API;
 using Microsoft.Reporting.WinForms;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace FishShopView
 {
     public partial class FormCustomerOrders : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly IReportService service;
-        public FormCustomerOrders(IReportService service)
+        public FormCustomerOrders()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void buttonMake_Click(object sender, EventArgs e)
         {
@@ -33,13 +30,15 @@ namespace FishShopView
                 " по " +
                dateTimePickerTo.Value.ToShortDateString());
                 reportViewer.LocalReport.SetParameters(parameter);
-                var dataSource = service.GetCustomerOrders(new ReportBindingModel
-                {
+                List<CustomerOrdersViewModel> response =
+                APICustomer.PostRequest<ReportBindingModel,
+                List<CustomerOrdersViewModel>>("api/Report/GetCustomerOrders", new ReportBindingModel
+{
                     DateFrom = dateTimePickerFrom.Value,
                     DateTo = dateTimePickerTo.Value
                 });
                 ReportDataSource source = new ReportDataSource("DataSetOrders",
-               dataSource);
+               response);
                 reportViewer.LocalReport.DataSources.Add(source);
                 reportViewer.RefreshReport();
             }
@@ -65,7 +64,8 @@ namespace FishShopView
             {
                 try
                 {
-                    service.SaveCustomerOrders(new ReportBindingModel
+                    APICustomer.PostRequest<ReportBindingModel,
+                    bool>("api/Report/SaveCustomerOrders", new ReportBindingModel
                     {
                         FileName = sfd.FileName,
                         DateFrom = dateTimePickerFrom.Value,
@@ -80,11 +80,6 @@ namespace FishShopView
                    MessageBoxIcon.Error);
                 }
             }
-        }
-
-        private void FormCustomerOrders_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
