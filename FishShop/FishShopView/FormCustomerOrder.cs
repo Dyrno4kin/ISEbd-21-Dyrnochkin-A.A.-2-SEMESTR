@@ -81,10 +81,5 @@ namespace FishShopView
                 }
             }
         }
-
-        private void FormCustomerOrders_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
