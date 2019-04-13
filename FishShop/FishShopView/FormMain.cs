@@ -1,10 +1,11 @@
-﻿using FishShopServiceDAL.BindingModels;
+using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
+using Unity;
+
 namespace FishShopView
 {
     public partial class FormMain : Form
