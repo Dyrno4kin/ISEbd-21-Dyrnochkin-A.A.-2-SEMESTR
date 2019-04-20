@@ -1,48 +1,32 @@
 ﻿using FishShopServiceDAL.BindingModels;
-using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace FishShopView
 {
     public partial class FormCreateOrder : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly ICustomerService serviceC;
-        private readonly ICanFoodService serviceCanFood;
-        private readonly IMainService serviceM;
-        public FormCreateOrder(ICustomerService serviceC, ICanFoodService serviceCanFood,
-        IMainService serviceM)
+        public FormCreateOrder()
         {
             InitializeComponent();
-            this.serviceC = serviceC;
-            this.serviceCanFood = serviceCanFood;
-            this.serviceM = serviceM;
         }
         private void FormCreateOrder_Load(object sender, EventArgs e)
         {
             try
             {
-                List<CustomerViewModel> listC = serviceC.GetList();
-                if (listC != null)
-                {
+                List<CustomerViewModel> listC = APIClient.GetRequest<List<CustomerViewModel>>("api/Customer/GetList");
                     comboBoxCustomer.DisplayMember = "CustomerFIO";
                     comboBoxCustomer.ValueMember = "Id";
                     comboBoxCustomer.DataSource = listC;
                     comboBoxCustomer.SelectedItem = null;
-                }
-                List<CanFoodViewModel> listCanFood = serviceCanFood.GetList();
-                if (listCanFood != null)
-                {
+
+                List<CanFoodViewModel> listCanFood = APIClient.GetRequest<List<CanFoodViewModel>>("api/CanFood/GetList");
                     comboBoxCanFood.DisplayMember = "CanFoodName";
                     comboBoxCanFood.ValueMember = "Id";
                     comboBoxCanFood.DataSource = listCanFood;
                     comboBoxCanFood.SelectedItem = null;
-                }
             }
             catch (Exception ex)
             {
@@ -58,7 +42,7 @@ namespace FishShopView
                 try
                 {
                     int id = Convert.ToInt32(comboBoxCanFood.SelectedValue);
-                    CanFoodViewModel canFood = serviceCanFood.GetElement(id);
+                    CanFoodViewModel canFood = APIClient.GetRequest<CanFoodViewModel>("api/CanFood/Get/" + id);
                     int count = Convert.ToInt32(textBoxCount.Text);
                     textBoxSum.Text = (count * canFood.Price).ToString();
                 }
@@ -99,7 +83,8 @@ namespace FishShopView
             }
             try
             {
-                serviceM.CreateOrder(new OrderBindingModel
+                APIClient.PostRequest<OrderBindingModel,
+                bool>("api/Customer/UpdElement", new OrderBindingModel
                 {
                     CustomerId = Convert.ToInt32(comboBoxCustomer.SelectedValue),
                     CanFoodId = Convert.ToInt32(comboBoxCanFood.SelectedValue),

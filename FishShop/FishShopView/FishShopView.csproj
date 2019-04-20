@@ -101,12 +101,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\APICanFood.cs" />
-    <Compile Include="API\APICustomer.cs" />
-    <Compile Include="API\APIIngredient.cs" />
-    <Compile Include="API\APIMain.cs" />
-    <Compile Include="API\APIReport.cs" />
-    <Compile Include="API\APIStock.cs" />
+    <Compile Include="APIClient.cs" />
     <Compile Include="FormCanFood.cs">
       <SubType>Form</SubType>
     </Compile>

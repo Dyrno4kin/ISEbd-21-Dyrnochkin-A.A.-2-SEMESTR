@@ -2,9 +2,9 @@
 using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
-namespace FishShopView.API
+namespace FishShopView
 {
-    public static class APIIngredient
+    public static class APIClient
     {
         private static HttpClient client = new HttpClient();
         public static void Connect()

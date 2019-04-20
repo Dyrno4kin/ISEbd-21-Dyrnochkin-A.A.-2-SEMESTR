@@ -162,10 +162,6 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // lifetimeStrategyBindingSource
-            // 
-            this.lifetimeStrategyBindingSource.DataSource = typeof(Unity.Strategies.LifetimeStrategy);
-            // 
             // FormCanFood
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);

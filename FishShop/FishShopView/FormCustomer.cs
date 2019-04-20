@@ -1,6 +1,5 @@
 ﻿using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.ViewModels;
-using FishShopView.API;
 using System;
 using System.Windows.Forms;
 
@@ -21,7 +20,7 @@ namespace FishShopView
             {
                 try
                 {
-                    CustomerViewModel customer = APICustomer.GetRequest<CustomerViewModel>("api/Customer/Get/" + id.Value);
+                    CustomerViewModel customer = APIClient.GetRequest<CustomerViewModel>("api/Customer/Get/" + id.Value);
                     textBoxFIO.Text = customer.CustomerFIO;
                 }
                 catch (Exception ex)
@@ -44,7 +43,7 @@ namespace FishShopView
             {
                 if (id.HasValue)
                 {
-                    APICustomer.PostRequest<CustomerBindingModel,
+                    APIClient.PostRequest<CustomerBindingModel,
                     bool>("api/Customer/UpdElement", new CustomerBindingModel
                     {
                         Id = id.Value,
@@ -53,7 +52,7 @@ namespace FishShopView
                 }
                 else
                 {
-                    APICustomer.PostRequest<CustomerBindingModel, bool>("api/Customer/AddElement", new CustomerBindingModel
+                    APIClient.PostRequest<CustomerBindingModel, bool>("api/Customer/AddElement", new CustomerBindingModel
                     { 
                         CustomerFIO = textBoxFIO.Text
                     });

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.ViewModels;
 using System.Windows.Forms;
-using FishShopView.API;
 
 namespace FishShopView
 {
@@ -23,7 +22,7 @@ namespace FishShopView
             try
             {
                 List<CustomerViewModel> list =
-                APICustomer.GetRequest<List<CustomerViewModel>>("api/Customer/GetList");
+                APIClient.GetRequest<List<CustomerViewModel>>("api/Customer/GetList");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -54,7 +53,7 @@ namespace FishShopView
                    Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        APICustomer.PostRequest<CustomerBindingModel,
+                        APIClient.PostRequest<CustomerBindingModel,
                         bool>("api/Customer/DelElement", new CustomerBindingModel { Id = id });
                     }
                     catch (Exception ex)

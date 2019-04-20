@@ -1,6 +1,5 @@
 ﻿using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.ViewModels;
-using FishShopView.API;
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
@@ -31,7 +30,7 @@ namespace FishShopView
                dateTimePickerTo.Value.ToShortDateString());
                 reportViewer.LocalReport.SetParameters(parameter);
                 List<CustomerOrdersViewModel> response =
-                APICustomer.PostRequest<ReportBindingModel,
+                APIClient.PostRequest<ReportBindingModel,
                 List<CustomerOrdersViewModel>>("api/Report/GetCustomerOrders", new ReportBindingModel
 {
                     DateFrom = dateTimePickerFrom.Value,
@@ -64,7 +63,7 @@ namespace FishShopView
             {
                 try
                 {
-                    APICustomer.PostRequest<ReportBindingModel,
+                    APIClient.PostRequest<ReportBindingModel,
                     bool>("api/Report/SaveCustomerOrders", new ReportBindingModel
                     {
                         FileName = sfd.FileName,
@@ -82,4 +81,4 @@ namespace FishShopView
             }
         }
     }
-}
+}

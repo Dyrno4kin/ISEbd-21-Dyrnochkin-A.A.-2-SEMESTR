@@ -1,6 +1,6 @@
 using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.ViewModels;
-using FishShopView.API;
+using FishShopView;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -17,7 +17,7 @@ namespace FishShopView
         {
         try
             {
-                List<OrderViewModel> list = APICustomer.GetRequest<List<OrderViewModel>>("api/Main/GetList");
+                List<OrderViewModel> list = APIClient.GetRequest<List<OrderViewModel>>("api/Main/GetList");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -63,7 +63,7 @@ namespace FishShopView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    APICustomer.PostRequest<OrderBindingModel,
+                    APIClient.PostRequest<OrderBindingModel,
                     bool>("api/Main/TakeOrderInWork", new OrderBindingModel
                     {
                         Id = id
@@ -84,7 +84,7 @@ namespace FishShopView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    APICustomer.PostRequest<OrderBindingModel,
+                    APIClient.PostRequest<OrderBindingModel,
                     bool>("api/Main/FinishOrder", new OrderBindingModel
                     {
                         Id = id
@@ -105,7 +105,7 @@ namespace FishShopView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    APICustomer.PostRequest<OrderBindingModel, bool>("api/Main/.PayOrder",
+                    APIClient.PostRequest<OrderBindingModel, bool>("api/Main/.PayOrder",
                     new OrderBindingModel
                     {
                         Id = id
@@ -146,7 +146,7 @@ namespace FishShopView
             {
                 try
                 {
-                    APICustomer.PostRequest<ReportBindingModel,
+                    APIClient.PostRequest<ReportBindingModel,
                     bool>("api/Report/SaveCanFoodPrice", new ReportBindingModel
                     {
                         FileName = sfd.FileName

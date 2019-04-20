@@ -4,21 +4,18 @@ using FishShopServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
+
+
 namespace FishShopView
 {
     public partial class FormCanFood : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
         public int Id { set { id = value; } }
-        private readonly ICanFoodService service;
         private int? id;
         private List<CanFoodIngredientViewModel> canFoodIngredients;
-        public FormCanFood(ICanFoodService service)
+        public FormCanFood()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void FormCanFood_Load(object sender, EventArgs e)
         {
@@ -26,14 +23,11 @@ namespace FishShopView
             {
                 try
                 {
-                    CanFoodViewModel view = service.GetElement(id.Value);
-                    if (view != null)
-                    {
-                        textBoxName.Text = view.CanFoodName;
-                        textBoxPrice.Text = view.Price.ToString();
-                        canFoodIngredients = view.CanFoodIngredients;
-                        LoadData();
-                    }
+                    CanFoodViewModel view = APIClient.GetRequest<CanFoodViewModel>("api/CanFood/Get/" + id.Value);
+                    textBoxName.Text = view.CanFoodName;
+                    textBoxPrice.Text = view.Price.ToString();
+                    canFoodIngredients = view.CanFoodIngredients;
+                    LoadData();
                 }
                 catch (Exception ex)
                 {
@@ -69,7 +63,7 @@ namespace FishShopView
         }
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCanFoodIngredient>();
+            var form = new FormCanFoodIngredient();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 if (form.Model != null)
@@ -87,7 +81,7 @@ namespace FishShopView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormCanFoodIngredient>();
+                var form = new FormCanFoodIngredient();
                 form.Model =
                canFoodIngredients[dataGridView.SelectedRows[0].Cells[0].RowIndex];
                 if (form.ShowDialog() == DialogResult.OK)
@@ -107,7 +101,6 @@ namespace FishShopView
                 {
                     try
                     {
-
                         canFoodIngredients.RemoveAt(dataGridView.SelectedRows[0].Cells[0].RowIndex);
                     }
                     catch (Exception ex)
@@ -158,7 +151,8 @@ namespace FishShopView
                 }
                 if (id.HasValue)
                 {
-                    service.UpdElement(new CanFoodBindingModel
+                    APIClient.PostRequest<CanFoodBindingModel,
+                    bool>("api/CanFood/UpdElement", new CanFoodBindingModel
                     {
                         Id = id.Value,
                         CanFoodName = textBoxName.Text,
@@ -168,7 +162,7 @@ namespace FishShopView
                 }
                 else
                 {
-                    service.AddElement(new CanFoodBindingModel
+                    APIClient.PostRequest<CanFoodBindingModel, bool>("api/CanFood/AddElement", new CanFoodBindingModel
                     {
                         CanFoodName = textBoxName.Text,
                         Price = Convert.ToInt32(textBoxPrice.Text),
