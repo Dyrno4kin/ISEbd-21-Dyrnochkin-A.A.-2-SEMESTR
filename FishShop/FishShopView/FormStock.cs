@@ -3,21 +3,16 @@ using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System;
 using System.Windows.Forms;
-using Unity;
 
 namespace FishShopView
 {
     public partial class FormStock : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
         public int Id { set { id = value; } }
-        private readonly IStockService service;
         private int? id;
-        public FormStock(IStockService service)
+        public FormStock()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void FormStock_Load(object sender, EventArgs e)
         {
@@ -25,9 +20,7 @@ namespace FishShopView
             {
                 try
                 {
-                    StockViewModel view = service.GetElement(id.Value);
-                    if (view != null)
-                    {
+                    StockViewModel view = APIClient.GetRequest<StockViewModel>("api/Stock/Get/" + id.Value);
                         textBoxName.Text = view.StockName;
                         dataGridView.DataSource = view.StockIngredients;
                         dataGridView.Columns[0].Visible = false;
@@ -35,7 +28,6 @@ namespace FishShopView
                         dataGridView.Columns[2].Visible = false;
                         dataGridView.Columns[3].AutoSizeMode =
                        DataGridViewAutoSizeColumnMode.Fill;
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -56,7 +48,8 @@ namespace FishShopView
             {
                 if (id.HasValue)
                 {
-                    service.UpdElement(new StockBindingModel
+                    APIClient.PostRequest<StockBindingModel,
+                    bool>("api/Stock/UpdElement", new StockBindingModel
                     {
                         Id = id.Value,
                         StockName = textBoxName.Text
@@ -64,7 +57,7 @@ namespace FishShopView
                 }
                 else
                 {
-                    service.AddElement(new StockBindingModel
+                    APIClient.PostRequest<StockBindingModel, bool>("api/Stock/AddElement", new StockBindingModel
                     {
                         StockName = textBoxName.Text
                     });

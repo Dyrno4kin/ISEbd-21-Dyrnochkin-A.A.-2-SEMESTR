@@ -1,24 +1,17 @@
 ﻿using FishShopServiceDAL.BindingModels;
-using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System;
 using System.Windows.Forms;
-using Unity;
 
 namespace FishShopView
 {
     public partial class FormCustomer : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-
         public int Id { set { id = value; } }
-        private readonly ICustomerService service;
         private int? id;
-        public FormCustomer(ICustomerService service)
+        public FormCustomer()
         {
             InitializeComponent();
-            this.service = service;
         }
 
         private void FormCustomer_Load(object sender, EventArgs e)
@@ -27,11 +20,8 @@ namespace FishShopView
             {
                 try
                 {
-                    CustomerViewModel view = service.GetElement(id.Value);
-                    if (view != null)
-                    {
-                        textBoxFIO.Text = view.CustomerFIO;
-                    }
+                    CustomerViewModel customer = APIClient.GetRequest<CustomerViewModel>("api/Customer/Get/" + id.Value);
+                    textBoxFIO.Text = customer.CustomerFIO;
                 }
                 catch (Exception ex)
                 {
@@ -53,7 +43,8 @@ namespace FishShopView
             {
                 if (id.HasValue)
                 {
-                    service.UpdElement(new CustomerBindingModel
+                    APIClient.PostRequest<CustomerBindingModel,
+                    bool>("api/Customer/UpdElement", new CustomerBindingModel
                     {
                         Id = id.Value,
                         CustomerFIO = textBoxFIO.Text
@@ -61,8 +52,8 @@ namespace FishShopView
                 }
                 else
                 {
-                    service.AddElement(new CustomerBindingModel
-                    {
+                    APIClient.PostRequest<CustomerBindingModel, bool>("api/Customer/AddElement", new CustomerBindingModel
+                    { 
                         CustomerFIO = textBoxFIO.Text
                     });
                 }

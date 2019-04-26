@@ -1,30 +1,23 @@
 using FishShopServiceDAL.BindingModels;
-using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
+using FishShopView;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace FishShopView
 {
     public partial class FormMain : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly IMainService service;
-        private readonly IReportService reportService;
-        public FormMain(IMainService service, IReportService reportService )
+        public FormMain()
         {
             InitializeComponent();
-            this.service = service;
-            this.reportService = reportService;
         }
         private void LoadData()
         {
         try
             {
-                List<OrderViewModel> list = service.GetList();
+                List<OrderViewModel> list = APIClient.GetRequest<List<OrderViewModel>>("api/Main/GetList");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -44,22 +37,22 @@ namespace FishShopView
         }
         private void заказчикиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCustomers>();
+            var form = new FormCustomers();
             form.ShowDialog();
         }
         private void ингредиентыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormIngredients>();
+            var form = new FormIngredients();
             form.ShowDialog();
         }
         private void консервыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCanFoods>();
+            var form = new FormCanFoods();
             form.ShowDialog();
         }
         private void buttonCreateOrder_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCreateOrder>();
+            var form = new FormCreateOrder();
             form.ShowDialog();
             LoadData();
         }
@@ -70,7 +63,11 @@ namespace FishShopView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.TakeOrderInWork(new OrderBindingModel { Id = id });
+                    APIClient.PostRequest<OrderBindingModel,
+                    bool>("api/Main/TakeOrderInWork", new OrderBindingModel
+                    {
+                        Id = id
+                    });
                     LoadData();
                 }
                 catch (Exception ex)
@@ -87,7 +84,11 @@ namespace FishShopView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.FinishOrder(new OrderBindingModel { Id = id });
+                    APIClient.PostRequest<OrderBindingModel,
+                    bool>("api/Main/FinishOrder", new OrderBindingModel
+                    {
+                        Id = id
+                    });
                     LoadData();
                 }
                 catch (Exception ex)
@@ -104,7 +105,11 @@ namespace FishShopView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.PayOrder(new OrderBindingModel { Id = id });
+                    APIClient.PostRequest<OrderBindingModel, bool>("api/Main/.PayOrder",
+                    new OrderBindingModel
+                    {
+                        Id = id
+                    });
                     LoadData();
                 }
                 catch (Exception ex)
@@ -121,13 +126,13 @@ namespace FishShopView
 
         private void складыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormStocks>();
+            var form = new FormStocks();
             form.ShowDialog();
         }
 
         private void поплнитьСкладToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormPutOnStock>();
+            var form = new FormPutOnStock();
             form.ShowDialog();
         }
 
@@ -141,7 +146,8 @@ namespace FishShopView
             {
                 try
                 {
-                    reportService.SaveCanFoodPrice(new ReportBindingModel
+                    APIClient.PostRequest<ReportBindingModel,
+                    bool>("api/Report/SaveCanFoodPrice", new ReportBindingModel
                     {
                         FileName = sfd.FileName
                     });
@@ -157,13 +163,13 @@ namespace FishShopView
         }
         private void загруженностьСкладовToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormStocksLoad>();
+            var form = new FormStocksLoad();
         form.ShowDialog();
         }
 
         private void заказыКликнтовToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCustomerOrders>();
+            var form = new FormCustomerOrders();
             form.ShowDialog();
         }
     }

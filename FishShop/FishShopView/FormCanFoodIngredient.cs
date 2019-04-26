@@ -3,14 +3,11 @@ using FishShopServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace FishShopView
 {
     public partial class FormCanFoodIngredient : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
         public CanFoodIngredientViewModel Model
         {
             set { model = value; }
@@ -19,18 +16,17 @@ namespace FishShopView
                 return model;
             }
         }
-        private readonly IIngredientService service;
         private CanFoodIngredientViewModel model;
-        public FormCanFoodIngredient(IIngredientService service)
+
+        public FormCanFoodIngredient()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void FormCanFoodIngredient_Load(object sender, EventArgs e)
         {
             try
             {
-                List<IngredientViewModel> list = service.GetList();
+                List<IngredientViewModel> list = APIClient.GetRequest<List<IngredientViewModel>>("api/Ingredient/GetList");
                 if (list != null)
                 {
                     comboBoxIngredient.DisplayMember = "IngredientName";

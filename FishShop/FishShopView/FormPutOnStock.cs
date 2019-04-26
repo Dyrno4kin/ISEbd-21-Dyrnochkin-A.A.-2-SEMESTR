@@ -5,30 +5,21 @@ using FishShopServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace FishShopView
 {
     public partial class FormPutOnStock : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly IStockService serviceS;
-        private readonly IIngredientService serviceI;
-        private readonly IMainService serviceM;
-        public FormPutOnStock(IStockService serviceS, IIngredientService serviceI,
-       IMainService serviceM)
+
+        public FormPutOnStock()
         {
             InitializeComponent();
-            this.serviceS = serviceS;
-            this.serviceI = serviceI;
-            this.serviceM = serviceM;
         }
         private void FormPutOnStock_Load(object sender, EventArgs e)
         {
             try
             {
-                List<IngredientViewModel> listI = serviceI.GetList();
+                List<IngredientViewModel> listI = APIClient.GetRequest<List<IngredientViewModel>>("api/Ingredient/GetList");
                 if (listI != null)
                 {
                     comboBoxIngredient.DisplayMember = "IngredientName";
@@ -36,7 +27,7 @@ namespace FishShopView
                     comboBoxIngredient.DataSource = listI;
                     comboBoxIngredient.SelectedItem = null;
                 }
-                List<StockViewModel> listS = serviceS.GetList();
+                List<StockViewModel> listS = APIClient.GetRequest<List<StockViewModel>>("api/Stock/GetList");
                 if (listS != null)
                 {
                     comboBoxStock.DisplayMember = "StockName";
@@ -73,7 +64,7 @@ namespace FishShopView
             }
             try
             {
-                serviceM.PutIngredientOnStock(new StockIngredientBindingModel
+                APIClient.PostRequest<StockIngredientBindingModel, bool>("api/Main/PutComponentOnStock", new StockIngredientBindingModel
                 {
                     IngredientId = Convert.ToInt32(comboBoxIngredient.SelectedValue),
                     StockId = Convert.ToInt32(comboBoxStock.SelectedValue),

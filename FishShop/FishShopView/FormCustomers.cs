@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using FishShopServiceDAL.Interfaces;
+using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.ViewModels;
 using System.Windows.Forms;
-using Unity;
 
 namespace FishShopView
 {
     public partial class FormCustomers : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly ICustomerService service;
-
-        public FormCustomers(ICustomerService service)
+        public FormCustomers()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void FormCustomers_Load(object sender, EventArgs e)
         {
@@ -27,7 +21,8 @@ namespace FishShopView
         {
             try
             {
-                List<CustomerViewModel> list = service.GetList();
+                List<CustomerViewModel> list =
+                APIClient.GetRequest<List<CustomerViewModel>>("api/Customer/GetList");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -44,7 +39,7 @@ namespace FishShopView
         }
 
         private void buttonUpd_Click(object sender, EventArgs e)
-        {
+        {       
             LoadData();
         }
         private void buttonDel_Click(object sender, EventArgs e)
@@ -58,7 +53,8 @@ namespace FishShopView
                    Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        service.DelElement(id);
+                        APIClient.PostRequest<CustomerBindingModel,
+                        bool>("api/Customer/DelElement", new CustomerBindingModel { Id = id });
                     }
                     catch (Exception ex)
                     {
@@ -72,7 +68,7 @@ namespace FishShopView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCustomer>();
+            var form = new FormCustomer();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
@@ -83,8 +79,10 @@ namespace FishShopView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormCustomer>();
-                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
+                var form = new FormCustomer
+                {
+                    Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value)
+                };
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     LoadData();

@@ -3,22 +3,17 @@ using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System;
 using System.Windows.Forms;
-using Unity;
 
 namespace FishShopView
 {
     public partial class FormIngredient : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
 
         public int Id { set { id = value; } }
-        private readonly IIngredientService service;
         private int? id;
-        public FormIngredient(IIngredientService service)
+        public FormIngredient()
         {
             InitializeComponent();
-            this.service = service;
         }
 
         private void FormIngredient_Load(object sender, EventArgs e)
@@ -27,11 +22,9 @@ namespace FishShopView
             {
                 try
                 {
-                    IngredientViewModel view = service.GetElement(id.Value);
-                    if (view != null)
-                    {
-                        textBoxIngredientName.Text = view.IngredientName;
-                    }
+                    IngredientViewModel view = APIClient.GetRequest<IngredientViewModel>("api/Ingredient/Get/" + id.Value);
+                    textBoxIngredientName.Text = view.IngredientName;
+                    
                 }
                 catch (Exception ex)
                 {
@@ -53,7 +46,8 @@ namespace FishShopView
             {
                 if (id.HasValue)
                 {
-                    service.UpdElement(new IngredientBindingModel
+                    APIClient.PostRequest<IngredientBindingModel,
+                    bool>("api/Ingredient/UpdElement", new IngredientBindingModel
                     {
                         Id = id.Value,
                         IngredientName = textBoxIngredientName.Text
@@ -61,7 +55,7 @@ namespace FishShopView
                 }
                 else
                 {
-                    service.AddElement(new IngredientBindingModel
+                    APIClient.PostRequest<IngredientBindingModel, bool>("api/Ingredient/AddElement", new IngredientBindingModel
                     {
                         IngredientName = textBoxIngredientName.Text
                     });

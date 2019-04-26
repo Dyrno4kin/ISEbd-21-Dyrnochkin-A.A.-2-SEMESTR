@@ -3,20 +3,15 @@ using System.Collections.Generic;
 using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System.Windows.Forms;
-using Unity;
+using FishShopServiceDAL.BindingModels;
 
 namespace FishShopView
 {
     public partial class FormCanFoods : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly ICanFoodService service;
-
-        public FormCanFoods(ICanFoodService service)
+        public FormCanFoods()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void FormCanFoods_Load(object sender, EventArgs e)
         {
@@ -27,7 +22,8 @@ namespace FishShopView
         {
             try
             {
-                List<CanFoodViewModel> list = service.GetList();
+                List<CanFoodViewModel> list =
+                APIClient.GetRequest<List<CanFoodViewModel>>("api/CanFood/GetList");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -41,7 +37,8 @@ namespace FishShopView
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
                MessageBoxIcon.Error);
             }
-        }
+        }
+
 
         private void buttonUpd_Click(object sender, EventArgs e)
         {
@@ -58,7 +55,8 @@ namespace FishShopView
                    Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        service.DelElement(id);
+                        APIClient.PostRequest<CanFoodBindingModel,
+                        bool>("api/CanFood/DelElement", new CanFoodBindingModel { Id = id });
                     }
                     catch (Exception ex)
                     {
@@ -72,7 +70,7 @@ namespace FishShopView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCanFood>();
+            var form = new FormCanFood();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
@@ -83,8 +81,10 @@ namespace FishShopView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormCanFood>();
-                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
+                var form = new FormCanFood()
+                {
+                    Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value)
+                };
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     LoadData();
