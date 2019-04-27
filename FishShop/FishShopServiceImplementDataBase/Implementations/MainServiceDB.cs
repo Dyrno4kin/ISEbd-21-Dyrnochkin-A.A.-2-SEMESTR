@@ -38,7 +38,9 @@ namespace FishShopServiceImplementDataBase.Implementations
                 Count = rec.Count,
                 Sum = rec.Sum,
                 CustomerFIO = rec.Customer.CustomerFIO,
-                CanFoodName = rec.CanFood.CanFoodName
+                CanFoodName = rec.CanFood.CanFoodName,
+                ImplementerId = rec.Implementer.Id,
+                ImplementerName = rec.Implementer.ImplementerFIO
             })
             .ToList();
             return result;
@@ -104,6 +106,7 @@ namespace FishShopServiceImplementDataBase.Implementations
                     }
                     element.DateImplement = DateTime.Now;
                     element.Status = OrderStatus.Выполняется;
+                    element.ImplementerId = model.ImplementerId;
                     context.SaveChanges();
                     transaction.Commit();
                 }

@@ -49,7 +49,7 @@ namespace FishShopView
                     int id = Convert.ToInt32(comboBoxCanFood.SelectedValue);
                     CanFoodViewModel canFood = APIClient.GetRequest<CanFoodViewModel>("api/CanFood/Get/" + id);
                     int count = Convert.ToInt32(textBoxCount.Text);
-                    textBoxSum.Text = (count * canFood.Price).ToString();
+                    textBoxSum.Text = (Convert.ToInt32(count * canFood.Price)).ToString();
                 }
                 catch (Exception ex)
                 {
@@ -95,6 +95,7 @@ namespace FishShopView
                     CanFoodId = Convert.ToInt32(comboBoxCanFood.SelectedValue),
                     Count = Convert.ToInt32(textBoxCount.Text),
                     Sum = Convert.ToInt32(textBoxSum.Text)
+
                 });
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение",
                MessageBoxButtons.OK, MessageBoxIcon.Information);
