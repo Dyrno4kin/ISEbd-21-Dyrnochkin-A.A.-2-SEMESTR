@@ -56,48 +56,7 @@ namespace FishShopView
             form.ShowDialog();
             LoadData();
         }
-        private void buttonTakeOrderInWork_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                try
-                {
-                    APIClient.PostRequest<OrderBindingModel,
-                    bool>("api/Main/TakeOrderInWork", new OrderBindingModel
-                    {
-                        Id = id
-                    });
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
-                }
-            }
-        }
-        private void buttonOrderReady_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                try
-                {
-                    APIClient.PostRequest<OrderBindingModel,
-                    bool>("api/Main/FinishOrder", new OrderBindingModel
-                    {
-                        Id = id
-                    });
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
-                }
-            }
-        }
+        
         private void buttonPayOrder_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
@@ -105,7 +64,7 @@ namespace FishShopView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    APIClient.PostRequest<OrderBindingModel, bool>("api/Main/.PayOrder",
+                    APIClient.PostRequest<OrderBindingModel, bool>("api/Main/PayOrder",
                     new OrderBindingModel
                     {
                         Id = id
@@ -170,7 +129,29 @@ namespace FishShopView
         private void заказыКликнтовToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new FormCustomerOrders();
-            form.ShowDialog();
+            form.ShowDialog();
+
+        }
+
+        private void сотрудникиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormImplementers();
+            form.ShowDialog();
+        }
+
+        private void запускРаботToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                APIClient.PostRequest<int?, bool>("api/Main/StartWork", null);
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
+               MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
+               MessageBoxIcon.Error);
+            }
         }
     }
 }

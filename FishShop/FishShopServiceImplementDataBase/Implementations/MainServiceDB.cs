@@ -38,7 +38,9 @@ namespace FishShopServiceImplementDataBase.Implementations
                 Count = rec.Count,
                 Sum = rec.Sum,
                 CustomerFIO = rec.Customer.CustomerFIO,
-                CanFoodName = rec.CanFood.CanFoodName
+                CanFoodName = rec.CanFood.CanFoodName,
+                ImplementerId = rec.Implementer.Id,
+                ImplementerName = rec.Implementer.ImplementerFIO
             })
             .ToList();
             return result;
@@ -104,6 +106,7 @@ namespace FishShopServiceImplementDataBase.Implementations
                     }
                     element.DateImplement = DateTime.Now;
                     element.Status = OrderStatus.Выполняется;
+                    element.ImplementerId = model.ImplementerId;
                     context.SaveChanges();
                     transaction.Commit();
                 }
@@ -142,6 +145,20 @@ namespace FishShopServiceImplementDataBase.Implementations
             element.Status = OrderStatus.Оплачен;
             context.SaveChanges();
         }
+
+        public List<OrderViewModel> GetFreeOrders()
+        {
+            List<OrderViewModel> result = context.Orders
+            .Where(x => x.Status == OrderStatus.Принят || x.Status ==
+           OrderStatus.НедостаточноРесурсов)
+            .Select(rec => new OrderViewModel
+            {
+                Id = rec.Id
+            })
+            .ToList();
+            return result;
+        }
+
         public void PutIngredientOnStock(StockIngredientBindingModel model)
         {
             StockIngredient element = context.StockIngredients.FirstOrDefault(rec =>

@@ -57,6 +57,7 @@
     <Compile Include="BindingModels\CanFoodBindingModel.cs" />
     <Compile Include="BindingModels\CanFoodIngredientBindingModel.cs" />
     <Compile Include="BindingModels\CustomerBindingModel.cs" />
+    <Compile Include="BindingModels\ImplementerBindingModel.cs" />
     <Compile Include="BindingModels\IngredientBindingModel.cs" />
     <Compile Include="BindingModels\OrderBildingModel.cs" />
     <Compile Include="BindingModels\ReportBindingModel.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="BindingModels\StockIngredientBindingModel.cs" />
     <Compile Include="Interfaces\ICanFoodService.cs" />
     <Compile Include="Interfaces\ICustomerService.cs" />
+    <Compile Include="Interfaces\IImplementerService.cs" />
     <Compile Include="Interfaces\IIngredientService.cs" />
     <Compile Include="Interfaces\IMainService.cs" />
     <Compile Include="Interfaces\IReportService.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="ViewModels\CustomerOrdersViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\IngredientViewModel.cs" />
+    <Compile Include="ViewModels\ImplementerViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\StockIngredientViewModel.cs" />
     <Compile Include="ViewModels\StocksLoadViewModel.cs" />

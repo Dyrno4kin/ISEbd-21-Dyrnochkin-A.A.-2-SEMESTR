@@ -63,6 +63,7 @@
     <Compile Include="FishDbContext.cs" />
     <Compile Include="Implementations\CanFoodServiceDB.cs" />
     <Compile Include="Implementations\CustomerServiceDB.cs" />
+    <Compile Include="Implementations\ImplementerServiceDB.cs" />
     <Compile Include="Implementations\IngredientServiceDB.cs" />
     <Compile Include="Implementations\MainServiceDB.cs" />
     <Compile Include="Implementations\ReportServiceDB.cs" />
@@ -70,6 +71,10 @@
     <Compile Include="Migrations\201903131036439_FirstMigration.cs" />
     <Compile Include="Migrations\201903131036439_FirstMigration.Designer.cs">
       <DependentUpon>201903131036439_FirstMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904201039375_Lab6.cs" />
+    <Compile Include="Migrations\201904201039375_Lab6.Designer.cs">
+      <DependentUpon>201904201039375_Lab6.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,6 +104,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201903131036439_FirstMigration.resx">
       <DependentUpon>201903131036439_FirstMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904201039375_Lab6.resx">
+      <DependentUpon>201904201039375_Lab6.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

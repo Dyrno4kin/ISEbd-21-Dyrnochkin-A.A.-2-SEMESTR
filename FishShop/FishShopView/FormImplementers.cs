@@ -1,18 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using FishShopServiceDAL.BindingModels;
 
 namespace FishShopView
 {
-    public partial class FormStocks : Form
+    public partial class FormImplementers : Form
     {
-        public FormStocks()
+        public FormImplementers()
         {
             InitializeComponent();
         }
-        private void FormStocks_Load(object sender, EventArgs e)
+
+        private void FormImplementers_Load(object sender, EventArgs e)
         {
             LoadData();
         }
@@ -21,8 +28,8 @@ namespace FishShopView
         {
             try
             {
-                List<StockViewModel> list =
-                    APIClient.GetRequest<List<StockViewModel>>("api/Stock/GetList");
+                List<ImplementerViewModel> list =
+                APIClient.GetRequest<List<ImplementerViewModel>>("api/Implementer/GetList");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -36,8 +43,7 @@ namespace FishShopView
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
                MessageBoxIcon.Error);
             }
-        }
-
+        }
 
         private void buttonUpd_Click(object sender, EventArgs e)
         {
@@ -54,8 +60,8 @@ namespace FishShopView
                    Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        APIClient.PostRequest<StockBindingModel,
-                        bool>("api/Stock/DelElement", new StockBindingModel { Id = id });
+                        APIClient.PostRequest<ImplementerBindingModel,
+                        bool>("api/Implementer/DelElement", new ImplementerBindingModel { Id = id });
                     }
                     catch (Exception ex)
                     {
@@ -69,7 +75,7 @@ namespace FishShopView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = new FormStock();
+            var form = new FormImplementer();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
@@ -80,10 +86,11 @@ namespace FishShopView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = new FormStock();
-                int n = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                form.Id = n;
-                if (form.ShowDialog() != DialogResult.OK)
+                var form = new FormImplementer
+                {
+                    Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value)
+                };
+                if (form.ShowDialog() == DialogResult.OK)
                 {
                     LoadData();
                 }
