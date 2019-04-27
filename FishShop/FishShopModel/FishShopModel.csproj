@@ -63,6 +63,7 @@
     <Compile Include="CanFood.cs" />
     <Compile Include="CanFoodIngredient.cs" />
     <Compile Include="Customer.cs" />
+    <Compile Include="Implementer.cs" />
     <Compile Include="Ingredient.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderStatus.cs" />

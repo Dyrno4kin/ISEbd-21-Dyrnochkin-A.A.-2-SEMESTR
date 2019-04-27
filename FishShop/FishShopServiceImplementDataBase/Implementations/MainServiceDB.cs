@@ -142,6 +142,20 @@ namespace FishShopServiceImplementDataBase.Implementations
             element.Status = OrderStatus.Оплачен;
             context.SaveChanges();
         }
+
+        public List<OrderViewModel> GetFreeOrders()
+        {
+            List<OrderViewModel> result = context.Orders
+            .Where(x => x.Status == OrderStatus.Принят || x.Status ==
+           OrderStatus.НедостаточноРесурсов)
+            .Select(rec => new OrderViewModel
+            {
+                Id = rec.Id
+            })
+            .ToList();
+            return result;
+        }
+
         public void PutIngredientOnStock(StockIngredientBindingModel model)
         {
             StockIngredient element = context.StockIngredients.FirstOrDefault(rec =>

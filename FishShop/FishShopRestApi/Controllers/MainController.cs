@@ -1,15 +1,20 @@
-﻿using FishShopServiceDAL.BindingModels;
+﻿using FishShopRestApi.Services;
+using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.Interfaces;
+using FishShopServiceDAL.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Web.Http;
 namespace FishShopRestApi.Controllers
 {
     public class MainController : ApiController
     {
         private readonly IMainService _service;
-        public MainController(IMainService service)
+        private readonly IImplementerService _serviceImplementer;
+        public MainController(IMainService service, IImplementerService serviceImplementer)
         {
             _service = service;
+            _serviceImplementer = serviceImplementer;
         }
         [HttpGet]
         public IHttpActionResult GetList()
@@ -27,16 +32,6 @@ namespace FishShopRestApi.Controllers
             _service.CreateOrder(model);
         }
         [HttpPost]
-        public void TakeOrderInWork(OrderBindingModel model)
-        {
-            _service.TakeOrderInWork(model);
-        }
-        [HttpPost]
-        public void FinishOrder(OrderBindingModel model)
-        {
-            _service.FinishOrder(model);
-        }
-        [HttpPost]
         public void PayOrder(OrderBindingModel model)
         {
             _service.PayOrder(model);
@@ -45,6 +40,20 @@ namespace FishShopRestApi.Controllers
         public void PutComponentOnStock(StockIngredientBindingModel model)
         {
             _service.PutIngredientOnStock(model);
+        }
+        [HttpPost]
+        public void StartWork()
+        {
+            List<OrderViewModel> orders = _service.GetFreeOrders();
+            foreach (var order in orders)
+            {
+                ImplementerViewModel impl = _serviceImplementer.GetFreeWorker();
+                if (impl == null)
+                {
+                    throw new Exception("Нет сотрудников");
+                }
+                new WorkImplementer(_service, _serviceImplementer, impl.Id, order.Id);
+            }
         }
     }
 }

@@ -16,6 +16,10 @@ namespace FishShopServiceDAL.ViewModels
         [DataMember]
         public string CanFoodName { get; set; }
         [DataMember]
+        public int? ImplementerId { get; set; }
+        [DataMember]
+        public string ImplementerName { get; set; }
+        [DataMember]
         public int Count { get; set; }
         [DataMember]
         public decimal Sum { get; set; }

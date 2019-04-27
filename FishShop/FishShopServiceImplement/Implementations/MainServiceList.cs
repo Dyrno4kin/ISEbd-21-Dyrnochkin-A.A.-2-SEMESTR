@@ -153,6 +153,11 @@ namespace FishShopServiceImplement.Implementations
                 });
             }
         }
+
+        public List<OrderViewModel> GetFreeOrders()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

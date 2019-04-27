@@ -17,16 +17,21 @@ namespace FishShopView
             try
             {
                 List<CustomerViewModel> listC = APIClient.GetRequest<List<CustomerViewModel>>("api/Customer/GetList");
+                if (listC != null)
+                {
                     comboBoxCustomer.DisplayMember = "CustomerFIO";
                     comboBoxCustomer.ValueMember = "Id";
                     comboBoxCustomer.DataSource = listC;
                     comboBoxCustomer.SelectedItem = null;
-
+                }
                 List<CanFoodViewModel> listCanFood = APIClient.GetRequest<List<CanFoodViewModel>>("api/CanFood/GetList");
+                if (listCanFood != null)
+                {
                     comboBoxCanFood.DisplayMember = "CanFoodName";
                     comboBoxCanFood.ValueMember = "Id";
                     comboBoxCanFood.DataSource = listCanFood;
                     comboBoxCanFood.SelectedItem = null;
+                }
             }
             catch (Exception ex)
             {
@@ -84,7 +89,7 @@ namespace FishShopView
             try
             {
                 APIClient.PostRequest<OrderBindingModel,
-                bool>("api/Customer/UpdElement", new OrderBindingModel
+                bool>("api/Main/CreateOrder", new OrderBindingModel
                 {
                     CustomerId = Convert.ToInt32(comboBoxCustomer.SelectedValue),
                     CanFoodId = Convert.ToInt32(comboBoxCanFood.SelectedValue),

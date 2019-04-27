@@ -20,5 +20,6 @@ namespace FishShopServiceImplementDataBase
         public virtual DbSet<CanFoodIngredient> CanFoodIngredients { get; set; }
         public virtual DbSet<Stock> Stocks { get; set; }
         public virtual DbSet<StockIngredient> StockIngredients { get; set; }
+        public virtual DbSet<Implementer> Implementers { get; set; }
     }
 }
