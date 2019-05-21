@@ -1,6 +1,3 @@
-using FishShopServiceDAL.Interfaces;
-using FishShopServiceImplementDataBase;
-using FishShopServiceImplementDataBase.Implementations;
 using System;
 using System.Windows.Forms;
 
@@ -19,7 +16,6 @@ namespace FishShopView
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
-
         }
     }
 }
