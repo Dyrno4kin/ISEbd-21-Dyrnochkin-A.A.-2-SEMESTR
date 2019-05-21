@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace FishShopServiceDAL.ViewModels
 {
@@ -7,7 +8,14 @@ namespace FishShopServiceDAL.ViewModels
     {
         [DataMember]
         public int Id { get; set; }
+
+        [DataMember]
+        public string Mail { get; set; }
+
         [DataMember]
         public string CustomerFIO { get; set; }
+
+        [DataMember]
+        public List<MessageInfoViewModel> Messages { get; set; }
     }
 }

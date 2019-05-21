@@ -9,8 +9,8 @@ namespace FishShopServiceDAL.ViewModels
     {
         [DataMember]
         public int Id { get; set; }
-        [DataMember]
         [DisplayName("Название склада")]
+        [DataMember]
         public string StockName { get; set; }
         [DataMember]
         public List<StockIngredientViewModel> StockIngredients { get; set; }

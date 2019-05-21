@@ -14,7 +14,12 @@ namespace FishShopModel
         [Required]
         public string CustomerFIO { get; set; }
 
+        public string Mail { get; set; }
+
         [ForeignKey("CustomerId")]
         public virtual List<Order> Orders { get; set; }
+
+        [ForeignKey("CustomerId")]
+        public virtual List<MessageInfo> MessageInfos { get; set; }
     }
 }

@@ -12,11 +12,11 @@ namespace FishShopServiceDAL.ViewModels
         public int StockId { get; set; }
         [DataMember]
         public int IngredientId { get; set; }
-        [DataMember]
         [DisplayName("Название ингредиента")]
-        public string IngredientName { get; set; }
         [DataMember]
+        public string IngredientName { get; set; }
         [DisplayName("Количество")]
+        [DataMember]
         public int Count { get; set; }
     }
 }
