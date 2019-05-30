@@ -32,6 +32,7 @@ namespace FishShopWPFView
             currentContainer.RegisterType<ICanFoodService, CanFoodServiceList>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IIngredientService, IngredientServiceList>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IMainService, MainServiceList>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IStockService, StockServiceList>(new HierarchicalLifetimeManager());
             return currentContainer;
         }
     }

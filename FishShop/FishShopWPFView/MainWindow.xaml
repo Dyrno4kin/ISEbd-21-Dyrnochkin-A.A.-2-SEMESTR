@@ -9,10 +9,12 @@
     <Grid Margin="0,0,28.83,-0.264">
         <Menu x:Name="menu" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="1047" Margin="10,0,0,0">
             <MenuItem Header="Справочники" Height="22" Width="137">
-                <MenuItem Header="Заказчики" HorizontalAlignment="Left" Height="28" Width="135" Margin="0,0,-21,0" Click="заказчикиToolStripMenuItem_Click"/>
+                <MenuItem Header="Заказчики" HorizontalAlignment="Left" Height="28" Width="152" Margin="0,0,-11.623,0" Click="заказчикиToolStripMenuItem_Click"/>
                 <MenuItem Header="Ингредиенты" HorizontalAlignment="Left" Height="24" Width="158" Margin="0,0,-18,0" Click="ингредиентыToolStripMenuItem_Click"/>
                 <MenuItem Header="Консервы" HorizontalAlignment="Left" Height="28" Width="135" Margin="0,0,-21,0" Click="консервыToolStripMenuItem_Click"/>
+                <MenuItem Header="Склады" HorizontalAlignment="Left" Height="28" Width="135" Margin="0,0,-21,0" Click="складыToolStripMenuItem_Click"/>
             </MenuItem>
+            <MenuItem Header="Пополнить склад" Height="22" Width="135" Click="пополнитьСкладToolStripMenuItem_Click"/>
         </Menu>
         <DataGrid x:Name="dataGridViewMain" HorizontalAlignment="Left" Height="272" Margin="0,27,0,0" VerticalAlignment="Top" Width="561" IsReadOnly="True"/>
         <Button x:Name="buttonCreateOrder" Content="Создать заказ" HorizontalAlignment="Left" Margin="587,57,0,0" VerticalAlignment="Top" Width="138" Height="28" Click="buttonCreateOrder_Click"/>
