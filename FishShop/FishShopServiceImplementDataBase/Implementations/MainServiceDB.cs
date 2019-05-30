@@ -4,9 +4,12 @@ using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.SqlServer;
+using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 
 namespace FishShopServiceImplementDataBase.Implementations
 {
@@ -47,7 +50,7 @@ namespace FishShopServiceImplementDataBase.Implementations
         }
         public void CreateOrder(OrderBindingModel model)
         {
-            context.Orders.Add(new Order
+            var order = new Order
             {
                 CustomerId = model.CustomerId,
                 CanFoodId = model.CanFoodId,
@@ -55,8 +58,11 @@ namespace FishShopServiceImplementDataBase.Implementations
                 Count = model.Count,
                 Sum = model.Sum,
                 Status = OrderStatus.Принят
-            });
+            };
+            context.Orders.Add(order);
             context.SaveChanges();
+            var customer = context.Customers.FirstOrDefault(x => x.Id == model.CustomerId);
+            SendEmail(customer.Mail, "Оповещение по заказам", string.Format("Заказ №{0} от {1} создан успешно", order.Id, order.DateCreate.ToShortDateString()));
         }
         public void TakeOrderInWork(OrderBindingModel model)
         {
@@ -108,11 +114,16 @@ namespace FishShopServiceImplementDataBase.Implementations
                     element.Status = OrderStatus.Выполняется;
                     element.ImplementerId = model.ImplementerId;
                     context.SaveChanges();
+                    SendEmail(element.Customer.Mail, "Оповещение по заказам",
+string.Format("Заказ №{0} от {1} передеан в работу", element.Id,
+element.DateCreate.ToShortDateString()));
                     transaction.Commit();
                 }
                 catch (Exception)
                 {
                     transaction.Rollback();
+                    context.SaveChanges();
+                    transaction.Commit();
                     throw;
                 }
             }
@@ -130,6 +141,7 @@ namespace FishShopServiceImplementDataBase.Implementations
             }
             element.Status = OrderStatus.Готов;
             context.SaveChanges();
+            SendEmail(element.Customer.Mail, "Оповещение по заказам", string.Format("Заказ №{0} от {1} передан на оплату", element.Id, element.DateCreate.ToShortDateString()));
         }
         public void PayOrder(OrderBindingModel model)
         {
@@ -144,6 +156,7 @@ namespace FishShopServiceImplementDataBase.Implementations
             }
             element.Status = OrderStatus.Оплачен;
             context.SaveChanges();
+            SendEmail(element.Customer.Mail, "Оповещение по заказам", string.Format("Заказ от {1} оплачен успешно", element.Id, element.DateCreate.ToShortDateString()));
         }
 
         public List<OrderViewModel> GetFreeOrders()
@@ -177,6 +190,38 @@ namespace FishShopServiceImplementDataBase.Implementations
                 });
             }
             context.SaveChanges();
+        }
+        private void SendEmail(string mailAddress, string subject, string text)
+        {
+            MailMessage objMailMessage = new MailMessage();
+            SmtpClient objSmtpClient = null;
+            try
+            {
+                objMailMessage.From = new
+               MailAddress(ConfigurationManager.AppSettings["MailLogin"]);
+                objMailMessage.To.Add(new MailAddress(mailAddress));
+                objMailMessage.Subject = subject;
+                objMailMessage.Body = text;
+                objMailMessage.SubjectEncoding = System.Text.Encoding.UTF8;
+                objMailMessage.BodyEncoding = System.Text.Encoding.UTF8;
+                objSmtpClient = new SmtpClient("smtp.gmail.com", 587);
+                objSmtpClient.UseDefaultCredentials = false;
+                objSmtpClient.EnableSsl = true;
+                objSmtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                objSmtpClient.Credentials = new
+               NetworkCredential(ConfigurationManager.AppSettings["MailLogin"],
+               ConfigurationManager.AppSettings["MailPassword"]);
+                objSmtpClient.Send(objMailMessage);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                objMailMessage = null;
+                objSmtpClient = null;
+            }
         }
     }
 }

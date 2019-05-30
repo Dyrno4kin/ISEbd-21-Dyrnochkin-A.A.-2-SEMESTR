@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -66,6 +67,7 @@
     <Compile Include="Implementations\ImplementerServiceDB.cs" />
     <Compile Include="Implementations\IngredientServiceDB.cs" />
     <Compile Include="Implementations\MainServiceDB.cs" />
+    <Compile Include="Implementations\MessageInfoServiceDB.cs" />
     <Compile Include="Implementations\ReportServiceDB.cs" />
     <Compile Include="Implementations\StockServiceDB.cs" />
     <Compile Include="Migrations\201903131036439_FirstMigration.cs" />
@@ -75,6 +77,14 @@
     <Compile Include="Migrations\201904201039375_Lab6.cs" />
     <Compile Include="Migrations\201904201039375_Lab6.Designer.cs">
       <DependentUpon>201904201039375_Lab6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905210707000_Lab61.cs" />
+    <Compile Include="Migrations\201905210707000_Lab61.Designer.cs">
+      <DependentUpon>201905210707000_Lab61.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905301306388_Lab7.cs" />
+    <Compile Include="Migrations\201905301306388_Lab7.Designer.cs">
+      <DependentUpon>201905301306388_Lab7.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,6 +117,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904201039375_Lab6.resx">
       <DependentUpon>201904201039375_Lab6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905210707000_Lab61.resx">
+      <DependentUpon>201905210707000_Lab61.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905301306388_Lab7.resx">
+      <DependentUpon>201905301306388_Lab7.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
