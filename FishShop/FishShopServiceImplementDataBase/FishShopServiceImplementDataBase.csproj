@@ -82,6 +82,10 @@
     <Compile Include="Migrations\201905210707000_Lab61.Designer.cs">
       <DependentUpon>201905210707000_Lab61.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905301306388_Lab7.cs" />
+    <Compile Include="Migrations\201905301306388_Lab7.Designer.cs">
+      <DependentUpon>201905301306388_Lab7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -116,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905210707000_Lab61.resx">
       <DependentUpon>201905210707000_Lab61.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905301306388_Lab7.resx">
+      <DependentUpon>201905301306388_Lab7.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
