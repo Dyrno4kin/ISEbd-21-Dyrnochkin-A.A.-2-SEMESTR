@@ -11,5 +11,6 @@ namespace FishShopServiceDAL.Interfaces
         void TakeOrderInWork(OrderBindingModel model);
         void FinishOrder(OrderBindingModel model);
         void PayOrder(OrderBindingModel model);
+        void PutIngredientOnStock(StockIngredientBindingModel model);
     }
 }

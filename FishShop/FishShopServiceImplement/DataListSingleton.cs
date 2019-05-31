@@ -11,6 +11,8 @@ namespace FishShopServiceImplement
         public List<Order> Orders { get; set; }
         public List<CanFood> CanFoods { get; set; }
         public List<CanFoodIngredient> CanFoodIngredients { get; set; }
+        public List<Stock> Stocks { get; set; }
+        public List<StockIngredient> StockIngredients { get; set; }
         private DataListSingleton()
         {
             Customers = new List<Customer>();
@@ -18,6 +20,8 @@ namespace FishShopServiceImplement
             Orders = new List<Order>();
             CanFoods = new List<CanFood>();
             CanFoodIngredients = new List<CanFoodIngredient>();
+            Stocks = new List<Stock>();
+            StockIngredients = new List<StockIngredient>();
         }
         public static DataListSingleton GetInstance()
         {
