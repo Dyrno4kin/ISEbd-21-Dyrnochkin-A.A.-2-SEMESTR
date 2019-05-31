@@ -1,6 +1,8 @@
 ﻿using FishShopServiceDAL.Interfaces;
-using FishShopServiceImplement.Implementations;
+using FishShopServiceImplementDataBase;
+using FishShopServiceImplementDataBase.Implementations;
 using System;
+using System.Data.Entity;
 using System.Windows;
 using Unity;
 using Unity.Lifetime;
@@ -28,11 +30,12 @@ namespace FishShopWPFView
         public static IUnityContainer BuildUnityContainer()
         {
             var currentContainer = new UnityContainer();
-            currentContainer.RegisterType<ICustomerService, CustomerServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<ICanFoodService, CanFoodServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IIngredientService, IngredientServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IMainService, MainServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IStockService, StockServiceList>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<DbContext, FishDbContextWPF>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<ICustomerService, CustomerServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<ICanFoodService, CanFoodServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IIngredientService, IngredientServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IMainService, MainServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IStockService, StockServiceDB>(new HierarchicalLifetimeManager());
             return currentContainer;
         }
     }
