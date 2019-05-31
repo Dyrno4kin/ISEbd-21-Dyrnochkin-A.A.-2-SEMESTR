@@ -8,10 +8,10 @@ using System.Linq;
 
 namespace FishShopServiceImplement.Implementations
 {
-    public class CustomerServiceDB : ICustomerService
+    public class CustomerServiceList : ICustomerService
     {
         private DataListSingleton source;
-        public CustomerServiceDB()
+        public CustomerServiceList()
         {
             source = DataListSingleton.GetInstance();
         }

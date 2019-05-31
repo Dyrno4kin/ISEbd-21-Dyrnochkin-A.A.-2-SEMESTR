@@ -1,6 +1,6 @@
 ﻿using FishShopServiceDAL.Interfaces;
-using FishShopServiceImplement.Implementations;
 using FishShopServiceImplementDataBase;
+using FishShopServiceImplementDataBase.Implementations;
 using System;
 using System.Data.Entity;
 using System.Windows;
