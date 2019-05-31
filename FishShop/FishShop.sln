@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishShopView", "FishShopVie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishShopWPFView", "FishShopWPFView\FishShopWPFView.csproj", "{6882E923-7F68-418D-8325-121777B0C609}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishShopServiceImplementDataBase", "FishShopServiceImplementDataBase\FishShopServiceImplementDataBase.csproj", "{F95277E7-477B-4D43-872B-72EAF16B26F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{6882E923-7F68-418D-8325-121777B0C609}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6882E923-7F68-418D-8325-121777B0C609}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6882E923-7F68-418D-8325-121777B0C609}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F95277E7-477B-4D43-872B-72EAF16B26F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95277E7-477B-4D43-872B-72EAF16B26F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F95277E7-477B-4D43-872B-72EAF16B26F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F95277E7-477B-4D43-872B-72EAF16B26F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
