@@ -16,7 +16,6 @@ using FishShopServiceDAL.Interfaces;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using Unity;
-u
 
 namespace FishShopWPFView
 {
@@ -26,7 +25,7 @@ namespace FishShopWPFView
     public partial class FormCustomerOrder : Window
     {
         [Dependency]
-        public new IUnityContainer Container { get; set; }
+        public IUnityContainer Container { get; set; }
 
         private readonly IReportService service;
 
@@ -45,7 +44,7 @@ namespace FishShopWPFView
             }
             try
             {
-                reportViewer.LocalReport.ReportEmbeddedResource = "CarpenterWorkshopWpf.ReportCustomersOrders.rdlc";
+                reportViewer.LocalReport.ReportEmbeddedResource = "FishShopWPFView.Report.rdlc";
                 ReportParameter parameter = new ReportParameter("ReportParameterPeriod",
                                             "c " + dateTimePickerFrom.SelectedDate.ToString() +
                                             " по " + dateTimePickerTo.SelectedDate.ToString());
@@ -102,5 +101,4 @@ namespace FishShopWPFView
         }
 
     }
-}
 }

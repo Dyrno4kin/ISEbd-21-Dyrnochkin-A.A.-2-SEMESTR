@@ -1,6 +1,7 @@
 ﻿using FishShopServiceDAL.BindingModels;
 using FishShopServiceDAL.Interfaces;
 using FishShopServiceDAL.ViewModels;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +29,13 @@ namespace FishShopWPFView
         public IUnityContainer Container { get; set; }
 
         private readonly IMainService service;
+        private readonly IReportService reportService;
 
-        public MainWindow(IMainService service)
+        public MainWindow(IMainService service, IReportService reportService)
         {
             InitializeComponent();
             this.service = service;
+            this.reportService = reportService;
         }
 
         private void LoadData()
@@ -147,6 +150,61 @@ namespace FishShopWPFView
         private void buttonRef_Click(object sender, EventArgs e)
         {
             LoadData();
+        }
+
+        private void прайсКонсервToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "doc|*.doc|docx|*.docx"
+            };
+
+            if (sfd.ShowDialog() == true)
+            {
+
+                try
+                {
+
+                    reportService.SaveCanFoodPrice(new ReportBindingModel
+                    {
+                        FileName = sfd.FileName
+                    });
+                    System.Windows.MessageBox.Show("Выполнено", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void загруженностьБазToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "xls|*.xls|xlsx|*.xlsx"
+            };
+            if (sfd.ShowDialog() == true)
+            {
+                try
+                {
+                    reportService.SaveStocksLoad(new ReportBindingModel
+                    {
+                        FileName = sfd.FileName
+                    });
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void заказыПолучателейToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormCustomerOrder>();
+            form.ShowDialog();
         }
     }
 }
