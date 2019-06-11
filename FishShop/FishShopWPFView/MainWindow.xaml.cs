@@ -180,25 +180,8 @@ namespace FishShopWPFView
 
         private void загруженностьБазToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog
-            {
-                Filter = "xls|*.xls|xlsx|*.xlsx"
-            };
-            if (sfd.ShowDialog() == true)
-            {
-                try
-                {
-                    reportService.SaveStocksLoad(new ReportBindingModel
-                    {
-                        FileName = sfd.FileName
-                    });
-                    MessageBox.Show("Выполнено", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
+            var form = Container.Resolve<FormStocksLoad>();
+            form.ShowDialog();
         }
 
         private void заказыПолучателейToolStripMenuItem_Click(object sender, EventArgs e)
