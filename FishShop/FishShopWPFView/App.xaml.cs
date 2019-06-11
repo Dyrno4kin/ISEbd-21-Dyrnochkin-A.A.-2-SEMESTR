@@ -36,7 +36,9 @@ namespace FishShopWPFView
             currentContainer.RegisterType<IIngredientService, IngredientServiceDB>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IMainService, MainServiceDB>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IStockService, StockServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IReportService, ReportServiceDB>(new HierarchicalLifetimeManager());
             return currentContainer;
+
         }
     }
 }
